@@ -7,6 +7,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CartItemsController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderItemsController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 
@@ -21,21 +22,26 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('book/delete', [BookController::class,'delete'])->name('book.delete');
     });
 
-    Route::middleware('role:user')->group(function () { 
+    Route::middleware('role:user')->group(function () {
         Route::get('cart/search', [CartController::class,'show'])->name('cart.search');
         Route::post('cart/store', [CartController::class,'store'])->name('cart.store');
         Route::delete('cart/delete', [CartController::class,'destroy'])->name('cart.delete');
         Route::resource('order', OrderController::class)->only(['index', 'show', 'destroy', 'update', 'store']);
         Route::resource('order-item', OrderItemsController::class)->only(['index', 'show', 'destroy', 'update', 'store']);
-
+        Route::post('review/add-review', [ReviewController::class, 'store'])->name('user.add.review');
+        Route::post('review/show-review/{review}', [ReviewController::class, 'show'])->name('user.show.review');
+        Route::post('review/edit-review/{review}', [ReviewController::class, 'edit'])->name('user.edit.review');
+        Route::post('review/delete-review/{review}', [ReviewController::class, 'delete'])->name('user.delete.review');
     });
-    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+    Route::post('logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('profile',[AuthController::class, 'profile'])->name('profile');
 });
 
-Route::get('/books', [BookController::class, 'index'])->name('book.index');
+Route::get('books', [BookController::class, 'index'])->name('book.index');
 Route::get('book/search', [BookController::class, 'search'])->name('book.search');
 Route::get('book/{book}', [BookController::class, 'show'])->name('book.show');
+Route::get('review/get-reviews/{book}', [ReviewController::class, 'index'])->name('user.get.reviews');
 Route::post('register', [AuthController::class, 'register'])->name('user.register');
 Route::post('login', [AuthController::class,'userLogin'])->name('user.login');
 Route::post('admin/login', [AuthController::class,'adminLogin'])->name('admin.login');

@@ -11,7 +11,7 @@ class OrderItemsController extends Controller
 {
     public function index(OrderItems $orderItem)
     {
-        return response()->json($orderItem->load('medicine'), 200);
+        return response()->json($orderItem->load('book'), 200);
     }
 
     public function store(Request $request)
