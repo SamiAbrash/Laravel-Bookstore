@@ -91,8 +91,14 @@ class BookController extends Controller
         }
     }
 
-    public function show(Book $book)
+    public function show(Request $request)
     {
+        $request->validate([
+            'id' => 'required|integer'
+        ]);
+
+        $book = Book::findOrFail($request->id);
+    
         return response()->json([
             'message : ' => 'Found',
             'book : ' => $book,

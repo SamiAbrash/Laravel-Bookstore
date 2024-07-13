@@ -1,4 +1,5 @@
 <?php
+// app/Models/Payment.php
 
 namespace App\Models;
 
@@ -10,13 +11,29 @@ class Payment extends Model
     use HasFactory;
 
     protected $fillable = [
+        'user_id',
         'order_id',
-        'method',
         'amount',
-        'status',
+        'currency',
+        'payment_method',
+        'payment_status',
+        'transaction_id',
+        'description',
     ];
 
-    public function order(){
+    /**
+     * Get the user that owns the payment.
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Get the order that owns the payment.
+     */
+    public function order()
+    {
         return $this->belongsTo(Order::class);
     }
 }

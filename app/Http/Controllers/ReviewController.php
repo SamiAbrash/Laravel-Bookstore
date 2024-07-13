@@ -29,7 +29,8 @@ class ReviewController extends Controller
     {
         $request->validate([
             'book_id' => 'required|integer|exists:books,id',
-            'comment' => 'required|string|min:1|max:500'
+            'comment' => 'required|string|min:1|max:500',
+            'rating' => ''
         ]);
 
         $review = new Review();

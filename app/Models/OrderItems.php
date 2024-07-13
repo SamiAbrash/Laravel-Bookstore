@@ -14,6 +14,7 @@ class OrderItems extends Model
         'book_id',
         'quantity',
         'price',
+        'user_id'
     ];
 
     public function order(){

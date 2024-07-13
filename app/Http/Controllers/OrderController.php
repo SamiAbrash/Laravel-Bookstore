@@ -20,17 +20,15 @@ class OrderController extends Controller
 
     public function store(Request $request)
     {
-        $order = new Order();
-        $order->user_id = Auth::id();
-        $order->total_price = $request->total_price;
-        $order->status = $request->status;
-        $order->save();
+        $order = Order::create([
+            'user_id' => Auth::id(),
+            'status' => 'pending',
+        ]);
 
         return response()->json([
-            'message' => 'success',
-            'order' => $order,
-            'status' => 200,
-        ]);
+            'message' => 'Order created successfully',
+            'order' => $order
+        ], 201);
     }
 
     public function show(Order $order)
@@ -61,5 +59,19 @@ class OrderController extends Controller
         return response()->json([
             'message' => 'deleted successfully'
         ]);
+    }
+
+        public function updateTotalAmount(Order $order)
+    {
+        $totalAmount = $order->items()->sum(\DB::raw('quantity * price'));
+        $order->update([
+            'total_amount' => $totalAmount,
+            'status' => 'completed',
+        ]);
+
+        return response()->json([
+            'message' => 'Order updated successfully',
+            'order' => $order
+        ], 200);
     }
 }
